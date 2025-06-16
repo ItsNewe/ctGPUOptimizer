@@ -15,7 +15,7 @@ namespace OptimizationEngine.UI
         // Avalonia configuration
         public static AppBuilder BuildAvaloniaApp() =>
             AppBuilder.Configure<App>()
-                //.UsePlatformDetect()
+                .UsePlatformDetect()
                 .LogToTrace()
                 .UseReactiveUI();
     }

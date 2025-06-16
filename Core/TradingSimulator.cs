@@ -1,11 +1,9 @@
-using System;
-using System.Collections.Generic;
 using OptimizationEngine.Models;
 
 namespace OptimizationEngine.Core
 {
     /// <summary>
-    /// Simulates trading environment: account balance, positions, orders, commissions, spreads.
+    /// Simulates cTrader lifecycle and trading environment: account balance, positions, orders, commissions, spreads.
     /// </summary>
     public class TradingSimulator
     {

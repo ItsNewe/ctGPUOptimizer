@@ -1,0 +1,70 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:viewmodels="clr-namespace:OptimizationEngine.UI.ViewModels"
+        Title="Optimization Engine" Width="800" Height="600">
+  <Window.DataContext>
+    <viewmodels:MainWindowViewModel />
+  </Window.DataContext>
+  <DockPanel Margin="10">
+    <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Spacing="10">
+      <TextBlock Text="cBot Assembly:" VerticalAlignment="Center" />
+      <TextBox Width="300" Text="{Binding BotAssemblyPath}"/>
+      <Button Content="Load Parameters" Command="{Binding LoadParametersCommand}" />
+      <Button Content="Save Config" Command="{Binding SaveConfigCommand}" />
+      <Button Content="Load Config" Command="{Binding LoadConfigFileCommand}" />
+      <TextBlock Text="cBot Type:" VerticalAlignment="Center" Margin="10,0,0,0" />
+      <ComboBox Width="200" ItemsSource="{Binding BotTypes}" SelectedItem="{Binding SelectedBotType}" />
+    </StackPanel>
+
+    <Grid DockPanel.Dock="Top" Margin="0,10,0,10">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="2*" />
+        <ColumnDefinition Width="3*" />
+      </Grid.ColumnDefinitions>
+
+      <!-- Parameters -->
+      <ScrollViewer Grid.Column="0">
+        <ItemsControl ItemsSource="{Binding Parameters}">
+          <ItemsControl.ItemTemplate>
+            <DataTemplate>
+              <StackPanel Orientation="Horizontal" Margin="0,4">
+                <TextBlock Text="{Binding Name}" Width="120" VerticalAlignment="Center" />
+                <!-- Enum -->
+                <ComboBox Width="120" 
+                          ItemsSource="{Binding EnumValues}" 
+                          SelectedItem="{Binding Value, Mode=TwoWay}" 
+                          IsVisible="{Binding EnumValues, Converter={StaticResource NullToBoolConverter}}" />
+                <!-- Other -->
+                <TextBox Width="120" Text="{Binding Value, Mode=TwoWay}" 
+                         IsVisible="{Binding EnumValues, Converter={StaticResource NotNullToFalseConverter}}" />
+              </StackPanel>
+            </DataTemplate>
+          </ItemsControl.ItemTemplate>
+        </ItemsControl>
+      </ScrollViewer>
+
+      <!-- Results -->
+      <DataGrid Grid.Column="1" ItemsSource="{Binding Results}" AutoGenerateColumns="False">
+        <DataGrid.Columns>
+          <DataGridTextColumn Header="Profit" Binding="{Binding Profit}" />
+          <DataGridTextColumn Header="Drawdown" Binding="{Binding MaxDrawdown}" />
+          <DataGridTextColumn Header="Sharpe" Binding="{Binding SharpeRatio}" />
+          <DataGridTextColumn Header="WinRate" Binding="{Binding WinRate}" />
+          <DataGridTextColumn Header="Parameters" Binding="{Binding ParamSummary}" Width="2*" />
+          <DataGridTextColumn Header="Run Time" Binding="{Binding RunTime}" />
+        </DataGrid.Columns>
+      </DataGrid>
+    </Grid>
+
+    <StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom" Spacing="10">
+      <TextBlock Text="Timeframe:" VerticalAlignment="Center" />
+      <ComboBox Width="120" ItemsSource="{Binding Timeframes}" SelectedItem="{Binding SelectedTimeframe}" />
+      <TextBlock Text="From:" VerticalAlignment="Center" Margin="10,0,0,0" />
+      <DatePicker SelectedDate="{Binding StartDate}" />
+      <TextBlock Text="To:" VerticalAlignment="Center" Margin="10,0,0,0" />
+      <DatePicker SelectedDate="{Binding EndDate}" />
+      <Button Content="Run Optimization" Command="{Binding RunOptimizationCommand}" IsEnabled="{Binding IsRunning, Converter={StaticResource InverseBoolConverter}}" />
+      <ProgressBar Width="100" IsIndeterminate="True" IsVisible="{Binding IsRunning}" />
+    </StackPanel>
+  </DockPanel>
+</Window>

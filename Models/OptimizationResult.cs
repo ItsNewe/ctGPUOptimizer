@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace OptimizationEngine.Models
 {
@@ -8,7 +9,15 @@ namespace OptimizationEngine.Models
     /// </summary>
     public class OptimizationResult
     {
-        public BacktestConfiguration Configuration { get; set; }
+        /// <summary>
+        /// Configuration for this result (initialized non-null)
+        /// </summary>
+        public BacktestConfiguration Configuration { get; set; } = default!;
+
+        /// <summary>
+        /// Summary of parameter values as a semicolon-separated string.
+        /// </summary>
+        public string ParamSummary => string.Join("; ", Configuration.ParameterValues.Select(kv => $"{kv.Key}={kv.Value}"));
 
         // Performance metrics
         public double Profit { get; set; }
